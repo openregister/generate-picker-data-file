@@ -15,7 +15,7 @@ This example demonstrates how to setup a simple HTTP GET endpoint using Java. On
 
 ## Build
 
-It is required to build prior to deploying. You can build the deployment artifact using Gradle or Maven.
+It is required to build prior to deploying. You can build the deployment artifact using Gradle.
 
 ### Gradle
 
@@ -48,36 +48,9 @@ BUILD SUCCESSFUL
 Total time: 8.195 secs
 ```
 
-### Maven
-
-In order to build using Maven simply run
-
-```bash
-mvn package
-```
-
-Note: you can install Maven with
-
-1. [sdkman](http://sdkman.io/) using "sdk install maven" (yes, use as default)
-2. sudo apt-get install mvn
-3. brew install maven
-
-If you use Maven to build, then in `serverless.yml` you have to replace
-
-```yaml
-package:
-  artifact: build/distributions/generate-picker-data-file.zip
-```
-by
-```yaml
-package:
-  artifact: target/generate-picker-data-file.jar
-```
-before deploying.
-
 ## Deploy
 
-After having built the deployment artifact using Gradle or Maven as described above you can deploy by simply running
+After having built the deployment artifact using Gradle as described above you can deploy by simply running
 
 ```bash
 serverless deploy
