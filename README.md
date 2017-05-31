@@ -1,8 +1,3 @@
-<!--
-title: AWS Simple HTTP Endpoint example in Java
-description: This example demonstrates how to setup a simple HTTP GET endpoint using Java. Once you ping it, it will reply with the current time.
-layout: Doc
--->
 # Simple HTTP Endpoint Example
 
 This example demonstrates how to setup a simple HTTP GET endpoint using Java. Once you ping it, it will reply with the current time.
@@ -16,6 +11,20 @@ This example demonstrates how to setup a simple HTTP GET endpoint using Java. On
 ## Build
 
 It is required to build prior to deploying. You can build the deployment artifact using Gradle.
+
+## Requirements
+
+- Java 8
+- Gradle 3.2+
+- Node 7 (optional, for [serverless](https://github.com/serverless/serverless))
+
+On macOS:
+
+```bash
+brew cask install java
+brew install gradle
+npm install -g serverless # optional, only if you want to deploy it to AWS Lambda
+```
 
 ### Gradle
 
