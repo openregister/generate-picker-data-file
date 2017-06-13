@@ -10,8 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Generator {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	public static String run(String countryJson, String csv) throws IOException {
-		JsonNode countryJsonNode = objectMapper.readTree(countryJson);
+	public static String run(String countryJson, String csv) {
+		JsonNode countryJsonNode = null;
+		try {
+			countryJsonNode = objectMapper.readTree(countryJson);
+		} catch(IOException err) {
+			return "{}";
+		}
 
 		Iterator<JsonNode> countries = countryJsonNode.elements();
 

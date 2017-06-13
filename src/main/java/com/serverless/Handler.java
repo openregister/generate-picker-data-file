@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.gov.Generator;
+
 import org.apache.log4j.Logger;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -16,7 +18,9 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("received: " + input);
-		Response responseBody = new Response("Hello, the current time is " + new Date());
+		Generator generator = new Generator();
+		String json = generator.run("{}", "");
+		Response responseBody = new Response(json);
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-Powered-By", "AWS Lambda & Serverless");
 		headers.put("Content-Type", "application/json");
