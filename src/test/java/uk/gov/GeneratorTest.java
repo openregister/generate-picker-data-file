@@ -11,11 +11,22 @@ public class GeneratorTest {
 	private static Fixtures fixtures = new Fixtures();
 
 	@Test
+	public void noCountry() throws Exception {
+		String inputCountryJson = "{}";
+		String expectedPickerJson = "{}";
+
+		String output = generator.run(inputCountryJson, "");
+
+		assertEquals(expectedPickerJson, output);
+		JSONAssert.assertEquals(expectedPickerJson, output, false);
+	}
+
+	@Test
 	public void oneCountry() throws Exception {
 		String inputCountryJson = fixtures.countryRegisterOnlyGb();
 		String expectedPickerJson = fixtures.graphOnlyGb();
 
-		String output = generator.run(inputCountryJson, fixtures.csv);
+		String output = generator.run(inputCountryJson, "");
 
 		assertEquals(expectedPickerJson, output);
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
@@ -26,7 +37,7 @@ public class GeneratorTest {
 		String inputCountryJson = fixtures.countryRegisterOnlyGbDe();
 		String expectedPickerJson = fixtures.graphOnlyGbDe();
 
-		String output = generator.run(inputCountryJson, fixtures.csv);
+		String output = generator.run(inputCountryJson, "");
 
 		assertEquals(expectedPickerJson, output);
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
