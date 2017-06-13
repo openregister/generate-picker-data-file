@@ -10,9 +10,9 @@ package:
   artifact: build/distributions/generate-picker-data-file.zip
 
 functions:
-  currentTime:
+  generate:
     handler: com.serverless.Handler
     events:
       - http:
-          path: ping
-          method: get
+          path: generate
+          method: post
