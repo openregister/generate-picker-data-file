@@ -19,14 +19,13 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("received: " + input);
 		Generator generator = new Generator();
-		String json = generator.run("{}", "");
-		Response responseBody = new Response(json);
+		String responseBody = generator.run("{}", "");
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-Powered-By", "AWS Lambda & Serverless");
 		headers.put("Content-Type", "application/json");
 		return ApiGatewayResponse.builder()
 				.setStatusCode(200)
-				.setObjectBody(responseBody)
+				.setRawBody(responseBody)
 				.setHeaders(headers)
 				.build();
 	}
