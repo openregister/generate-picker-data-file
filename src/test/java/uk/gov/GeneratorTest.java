@@ -42,4 +42,16 @@ public class GeneratorTest {
 		assertEquals(expectedPickerJson, output);
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
 	}
+
+	@Test
+	public void oneCountryWithCsv() throws Exception {
+		String inputCountryJson = fixtures.countryRegisterOnlyGb();
+		String inputCsv = fixtures.csvOnlyGb();
+		String expectedPickerJson = fixtures.graphWithSynonymsOnlyGb();
+
+		String output = generator.run(inputCountryJson, inputCsv);
+
+		assertEquals(expectedPickerJson, output);
+		JSONAssert.assertEquals(expectedPickerJson, output, false);
+	}
 }

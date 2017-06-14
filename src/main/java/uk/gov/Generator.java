@@ -29,6 +29,7 @@ public class Generator {
 
 			ObjectNode names = objectMapper.createObjectNode();
 			names.put("en-GB", item.get("name").textValue());
+			names.put("cy", false);
 
 			ObjectNode meta = objectMapper.createObjectNode();
 			meta.put("canonical", true);

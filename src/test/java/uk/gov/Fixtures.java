@@ -50,7 +50,8 @@ public class Fixtures {
 	public static final String graphJsonGb = ""
 		+ "\"country:GB\": {"
 			+ "\"names\": {"
-				+ "\"en-GB\": \"United Kingdom\""
+				+ "\"en-GB\": \"United Kingdom\","
+				+ "\"cy\": false"
 			+ "},"
 			+ "\"meta\": {"
 				+ "\"canonical\": true,"
@@ -62,10 +63,91 @@ public class Fixtures {
 			+ "}"
 		+ "}";
 
+	public static final String graphJsonGbWithCy = ""
+		+ "\"country:GB\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"United Kingdom\","
+				+ "\"cy\": \"Y Deyrnas Unedig\""
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": true,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": true"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": []"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymUKGBNI = ""
+		+ "\"nym:The United Kingdom of Great Britain and Northern Ireland\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"The United Kingdom of Great Britain and Northern Ireland\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": true"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:GB\"]"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymBrtain = ""
+		+ "\"nym:Brtain\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"Brtain\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": false"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:GB\"]"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymGB = ""
+		+ "\"nym:GB\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"GB\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": false"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:GB\"]"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymUK = ""
+		+ "\"nym:UK\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"UK\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": false"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:GB\"]"
+			+ "}"
+		+ "}";
+
 	public static final String graphJsonDe = ""
 		+ "\"country:DE\": {"
 			+ "\"names\": {"
-				+ "\"en-GB\": \"Germany\""
+				+ "\"en-GB\": \"Germany\","
+				+ "\"cy\": false"
 			+ "},"
 			+ "\"meta\": {"
 				+ "\"canonical\": true,"
@@ -78,7 +160,7 @@ public class Fixtures {
 		+ "}";
 
 	// Turns a list of JSON entries into a big JSON object with the strings as keys.
-	public static String joinRegisterEntries(String[] registerEntries) {
+	public static String joinJsonEntries(String[] registerEntries) {
 		return "{" + String.join(",", registerEntries) + "}";
 	}
 
@@ -91,33 +173,38 @@ public class Fixtures {
 		return objectMapper.readTree(json).toString();
 	}
 
-	public static String countryRegisterOnlyGb () {
+	public static String countryRegisterOnlyGb() {
 		String[] registerEntries = {countryRegisterEntryGb};
-		return joinRegisterEntries(registerEntries);
+		return joinJsonEntries(registerEntries);
 	}
 
-	public static String countryRegisterOnlyGbDe () {
+	public static String countryRegisterOnlyGbDe() {
 		String[] registerEntries = {countryRegisterEntryGb, countryRegisterEntryDe};
-		return joinRegisterEntries(registerEntries);
+		return joinJsonEntries(registerEntries);
 	}
 
-	public static String csvOnlyGb () {
+	public static String csvOnlyGb() {
 		String [] csvEntries = {csvHeader, csvEntryGb};
 		return joinCsvEntries(csvEntries);
 	}
 
-	public static String csvOnlyGbDe () {
+	public static String csvOnlyGbDe() {
 		String [] csvEntries = {csvHeader, csvEntryGb, csvEntryDe};
 		return joinCsvEntries(csvEntries);
 	}
 
-	public static String graphOnlyGb () throws Exception {
+	public static String graphOnlyGb() throws Exception {
 		String[] graphEntries = {graphJsonGb};
-		return prettyJson(joinRegisterEntries(graphEntries));
+		return prettyJson(joinJsonEntries(graphEntries));
 	}
 
-	public static String graphOnlyGbDe () throws Exception {
+	public static String graphOnlyGbDe() throws Exception {
 		String[] graphEntries = {graphJsonGb, graphJsonDe};
-		return prettyJson(joinRegisterEntries(graphEntries));
+		return prettyJson(joinJsonEntries(graphEntries));
+	}
+
+	public static String graphWithSynonymsOnlyGb() throws Exception {
+		String[] graphEntries = {graphJsonGb, graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK};
+		return prettyJson(joinJsonEntries(graphEntries));
 	}
 }
