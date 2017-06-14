@@ -38,9 +38,16 @@ public class Fixtures {
 			+ "]"
 		+ "}";
 
-	public static final String csv = "";
+	public static final String csvHeader = ""
+		+ "Andy's key,Type,Name,Official-name,Code,Excluded,Territory belongs to,Territory belongs to code,Welsh,Passport applicant typos,Endonyms,Combined Synonyms,DWP Synonyms\n";
 
-	public static final String gbGraphJson = ""
+	public static final String csvEntryGb = ""
+		+ "country:GB,country,United Kingdom,The United Kingdom of Great Britain and Northern Ireland,GB,,,,Y Deyrnas Unedig,\"Brtain\",\"UK\",\n";
+
+	public static final String csvEntryDe = ""
+		+ "country:DE,country,Germany,The Federal Republic of Germany,DE,,,,Yr Almaen,,Deutschland,\"Bundesrepublik\",\n";
+
+	public static final String graphJsonGb = ""
 		+ "\"country:GB\": {"
 			+ "\"names\": {"
 				+ "\"en-GB\": \"United Kingdom\""
@@ -55,7 +62,7 @@ public class Fixtures {
 			+ "}"
 		+ "}";
 
-	public static final String deGraphJson = ""
+	public static final String graphJsonDe = ""
 		+ "\"country:DE\": {"
 			+ "\"names\": {"
 				+ "\"en-GB\": \"Germany\""
@@ -71,8 +78,12 @@ public class Fixtures {
 		+ "}";
 
 	// Turns a list of JSON entries into a big JSON object with the strings as keys.
-	public static String joinEntries(String[] registerEntries) {
+	public static String joinRegisterEntries(String[] registerEntries) {
 		return "{" + String.join(",", registerEntries) + "}";
+	}
+
+	public static String joinCsvEntries(String [] csvEntries) {
+		return String.join("\n", csvEntries);
 	}
 
 	// Pipe through Jackson so we get a JSON string with consistent whitespacing and ordering.
@@ -82,21 +93,31 @@ public class Fixtures {
 
 	public static String countryRegisterOnlyGb () {
 		String[] registerEntries = {countryRegisterEntryGb};
-		return joinEntries(registerEntries);
+		return joinRegisterEntries(registerEntries);
 	}
 
 	public static String countryRegisterOnlyGbDe () {
 		String[] registerEntries = {countryRegisterEntryGb, countryRegisterEntryDe};
-		return joinEntries(registerEntries);
+		return joinRegisterEntries(registerEntries);
+	}
+
+	public static String csvOnlyGb () {
+		String [] csvEntries = {csvHeader, csvEntryGb};
+		return joinCsvEntries(csvEntries);
+	}
+
+	public static String csvOnlyGbDe () {
+		String [] csvEntries = {csvHeader, csvEntryGb, csvEntryDe};
+		return joinCsvEntries(csvEntries);
 	}
 
 	public static String graphOnlyGb () throws Exception {
-		String[] graphEntries = {gbGraphJson};
-		return prettyJson(joinEntries(graphEntries));
+		String[] graphEntries = {graphJsonGb};
+		return prettyJson(joinRegisterEntries(graphEntries));
 	}
 
 	public static String graphOnlyGbDe () throws Exception {
-		String[] graphEntries = {gbGraphJson, deGraphJson};
-		return prettyJson(joinEntries(graphEntries));
+		String[] graphEntries = {graphJsonGb, graphJsonDe};
+		return prettyJson(joinRegisterEntries(graphEntries));
 	}
 }
