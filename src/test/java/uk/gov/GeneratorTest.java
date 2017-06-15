@@ -17,7 +17,6 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, "");
 
-		assertEquals(expectedPickerJson, output);
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
 	}
 
@@ -28,7 +27,6 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, "");
 
-		assertEquals(expectedPickerJson, output);
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
 	}
 
@@ -39,7 +37,6 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, "");
 
-		assertEquals(expectedPickerJson, output);
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
 	}
 
@@ -51,7 +48,17 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, inputCsv);
 
-		assertEquals(expectedPickerJson, output);
+		JSONAssert.assertEquals(expectedPickerJson, output, false);
+	}
+
+	@Test
+	public void multipleCountriesWithCsv() throws Exception {
+		String inputCountryJson = fixtures.countryRegisterOnlyGbDe();
+		String inputCsv = fixtures.csvOnlyGbDe();
+		String expectedPickerJson = fixtures.graphWithSynonymsOnlyGbDe();
+
+		String output = generator.run(inputCountryJson, inputCsv);
+
 		JSONAssert.assertEquals(expectedPickerJson, output, false);
 	}
 }

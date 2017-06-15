@@ -39,13 +39,13 @@ public class Fixtures {
 		+ "}";
 
 	public static final String csvHeader = ""
-		+ "Andy's key,Type,Name,Official-name,Code,Excluded,Territory belongs to,Territory belongs to code,Welsh,Passport applicant typos,Endonyms,Combined Synonyms,DWP Synonyms\n";
+		+ "Andy's key,Type,Name,Official-name,Code,Excluded,Territory belongs to,Territory belongs to code,Welsh,Passport applicant typos,Endonyms,Combined Synonyms,DWP Synonyms";
 
 	public static final String csvEntryGb = ""
-		+ "country:GB,country,United Kingdom,The United Kingdom of Great Britain and Northern Ireland,GB,,,,Y Deyrnas Unedig,\"Brtain\",\"UK\",\n";
+		+ "country:GB,country,United Kingdom,The United Kingdom of Great Britain and Northern Ireland,GB,,,,Y Deyrnas Unedig,\"Brtain\",\"UK\",";
 
 	public static final String csvEntryDe = ""
-		+ "country:DE,country,Germany,The Federal Republic of Germany,DE,,,,Yr Almaen,,Deutschland,\"Bundesrepublik\",\n";
+		+ "country:DE,country,Germany,The Federal Republic of Germany,DE,,,,Yr Almaen,,Deutschland,\"Bundesrepublik\",";
 
 	public static final String graphJsonGb = ""
 		+ "\"country:GB\": {"
@@ -159,6 +159,86 @@ public class Fixtures {
 			+ "}"
 		+ "}";
 
+	public static final String graphJsonDeWithCy = ""
+		+ "\"country:DE\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"Germany\","
+				+ "\"cy\": \"Yr Almaen\""
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": true,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": true"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": []"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymFRG = ""
+		+ "\"nym:The Federal Republic of Germany\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"The Federal Republic of Germany\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": true"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:DE\"]"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymDeutschland = ""
+		+ "\"nym:Deutschland\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"Deutschland\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": false"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:DE\"]"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymDE = ""
+		+ "\"nym:DE\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"DE\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": false"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:DE\"]"
+			+ "}"
+		+ "}";
+
+	public static final String graphJsonNymBundesrepublik = ""
+		+ "\"nym:Bundesrepublik\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"Bundesrepublik\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": false,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"stable-name\": false"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": [\"country:DE\"]"
+			+ "}"
+		+ "}";
+
 	// Turns a list of JSON entries into a big JSON object with the strings as keys.
 	public static String joinJsonEntries(String[] registerEntries) {
 		return "{" + String.join(",", registerEntries) + "}";
@@ -204,7 +284,12 @@ public class Fixtures {
 	}
 
 	public static String graphWithSynonymsOnlyGb() throws Exception {
-		String[] graphEntries = {graphJsonGb, graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK};
+		String[] graphEntries = {graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK};
+		return prettyJson(joinJsonEntries(graphEntries));
+	}
+
+	public static String graphWithSynonymsOnlyGbDe() throws Exception {
+		String[] graphEntries = {graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK, graphJsonDeWithCy, graphJsonNymFRG, graphJsonNymDeutschland, graphJsonNymDE, graphJsonNymBundesrepublik};
 		return prettyJson(joinJsonEntries(graphEntries));
 	}
 }
