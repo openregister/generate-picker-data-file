@@ -134,27 +134,33 @@ public class Generator {
 		}
 	}
 
-	public static String run(String entriesJson, String csv) {
-		ObjectNode resultNode = objectMapper.createObjectNode();
-		JsonNode entriesJsonNode = null;
-		List<CSVRecord> csvList = null;
-
+	public static JsonNode parseEntriesJson(String entriesJson) {
 		try {
-			entriesJsonNode = objectMapper.readTree(entriesJson);
-
-			if (csv.length() > 0) {
-				CSVFormat format = CSVFormat.EXCEL.withHeader().withSkipHeaderRecord();
-				CSVParser parser = CSVParser.parse(csv, format);
-				csvList = parser.getRecords();
-			}
+			return objectMapper.readTree(entriesJson);
 		} catch(IOException err) {
-			return resultNode.toString();
+			return null;
+		}
+	}
+
+	public static List<CSVRecord> parseCsv(String csv) {
+		try {
+			CSVFormat format = CSVFormat.EXCEL.withHeader().withSkipHeaderRecord();
+			CSVParser parser = CSVParser.parse(csv, format);
+			return parser.getRecords();
+		} catch (IOException err) {
+			return null;
+		}
+	}
+
+	public static String run(String countriesJson, String csv) {
+		ObjectNode resultNode = objectMapper.createObjectNode();
+
+		JsonNode countriesJsonNode = parseEntriesJson(countriesJson);
+		if (countriesJsonNode != null) {
+			generateEntries(countriesJsonNode, resultNode, "country");
 		}
 
-		if (entriesJsonNode != null) {
-			generateEntries(entriesJsonNode, resultNode, "country");
-		}
-
+		List<CSVRecord> csvList = parseCsv(csv);
 		if (csvList != null) {
 			generateNyms(csvList, resultNode);
 		}
