@@ -15,7 +15,7 @@ import org.apache.commons.csv.CSVRecord;
 public class Generator {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	private static ObjectNode createEntryNode(
+	public static ObjectNode createEntryNode(
 		String gbName, String cyName,
 		boolean isCanonical, boolean isStable,
 		String[] from
@@ -46,13 +46,33 @@ public class Generator {
 		return entryNode;
 	}
 
-	public static String run(String countryJson, String csv) {
+	public static void generateEntries(JsonNode entriesJsonNode, ObjectNode resultNode, String type) {
+		if (entriesJsonNode != null) {
+			Iterator<JsonNode> entries = entriesJsonNode.elements();
+
+			while (entries.hasNext()) {
+				JsonNode entry = entries.next();
+				JsonNode item = entry.get("item").get(0);
+				String key = entry.get("key").textValue();
+
+				ObjectNode entryNode = createEntryNode(
+					item.get("name").textValue(), "",
+					true, true,
+					new String[]{}
+				);
+
+				resultNode.set(type + ":" + key, entryNode);
+			}
+		}
+	}
+
+	public static String run(String entriesJson, String csv) {
 		ObjectNode resultNode = objectMapper.createObjectNode();
-		JsonNode countryJsonNode = null;
+		JsonNode entriesJsonNode = null;
 		List<CSVRecord> csvList = null;
 
 		try {
-			countryJsonNode = objectMapper.readTree(countryJson);
+			entriesJsonNode = objectMapper.readTree(entriesJson);
 
 			if (csv.length() > 0) {
 				CSVFormat format = CSVFormat.EXCEL.withHeader().withSkipHeaderRecord();
@@ -63,23 +83,7 @@ public class Generator {
 			return resultNode.toString();
 		}
 
-		if (countryJsonNode != null) {
-			Iterator<JsonNode> countries = countryJsonNode.elements();
-
-			while (countries.hasNext()) {
-				JsonNode country = countries.next();
-				JsonNode item = country.get("item").get(0);
-				String key = country.get("key").textValue();
-
-				ObjectNode countryNode = createEntryNode(
-					item.get("name").textValue(), "",
-					true, true,
-					new String[]{}
-				);
-
-				resultNode.set("country:" + key, countryNode);
-			}
-		}
+		generateEntries(entriesJsonNode, resultNode, "country");
 
 		if (csvList != null) {
 			for (CSVRecord record : csvList) {
