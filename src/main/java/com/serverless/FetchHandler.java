@@ -26,8 +26,12 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 		LOG.info("received: " + input);
 
 		String countryRegisterJson = "{}";
+		String territoryRegisterJson = "{}";
+		String ukRegisterJson = "{}";
 		try {
 			countryRegisterJson = fetcher.get("https://country.register.gov.uk/records.json?page-size=500");
+			territoryRegisterJson = fetcher.get("https://territory.register.gov.uk/records.json?page-size=500");
+			ukRegisterJson = fetcher.get("https://uk.discovery.openregister.org/records.json?page-size=500");
 		} catch (IOException err) {
 			LOG.error("HTTP request IOException: " + err);
 		}
