@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -153,17 +152,35 @@ public class Generator {
 		}
 	}
 
-	public static String runMultiple(Map<String, String> typeToEntriesJson, String csv) {
+	public static String runMultiple(String countriesJson, String territoriesJson, String ukJson, String csv) {
 		ObjectNode resultNode = objectMapper.createObjectNode();
 
-		Set<String> types = typeToEntriesJson.keySet();
+		JsonNode countriesJsonNode = parseEntriesJson(countriesJson);
+		if (countriesJsonNode != null) {
+			generateEntries(countriesJsonNode, resultNode, "country");
+		}
 
-		for (String type : types) {
-			String entriesJson = typeToEntriesJson.get(type);
-			JsonNode entriesJsonNode = parseEntriesJson(entriesJson);
+		JsonNode territoriesJsonNode = parseEntriesJson(territoriesJson);
+		if (territoriesJsonNode != null) {
+			generateEntries(territoriesJsonNode, resultNode, "territory");
+		}
 
-			if (entriesJsonNode != null) {
-				generateEntries(entriesJsonNode, resultNode, type);
+		JsonNode ukJsonNode = parseEntriesJson(ukJson);
+		if (ukJsonNode != null) {
+			Iterator<JsonNode> entries = ukJsonNode.elements();
+
+			while (entries.hasNext()) {
+				JsonNode entry = entries.next();
+				JsonNode item = entry.get("item").get(0);
+				String key = entry.get("key").textValue();
+
+				ObjectNode entryNode = createEntryNode(
+					item.get("name").textValue(), "",
+					false, true,
+					new String[]{"country:GB"}
+				);
+
+				resultNode.set("uk:" + key, entryNode);
 			}
 		}
 
