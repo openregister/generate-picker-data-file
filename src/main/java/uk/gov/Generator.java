@@ -163,7 +163,7 @@ public class Generator {
 			JsonNode entriesJsonNode = parseEntriesJson(entriesJson);
 
 			if (entriesJsonNode != null) {
-				generateEntries(entriesJsonNode, resultNode, "country");
+				generateEntries(entriesJsonNode, resultNode, type);
 			}
 		}
 
