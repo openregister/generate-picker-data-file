@@ -36,7 +36,12 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 			LOG.error("HTTP request IOException: " + err);
 		}
 
-		String responseBody = generator.run(countryRegisterJson, "");
+		Map<String, String> typeToEntriesJson = new HashMap<>();
+		typeToEntriesJson.put("country", countryRegisterJson);
+		typeToEntriesJson.put("territory", territoryRegisterJson);
+		typeToEntriesJson.put("uk", ukRegisterJson);
+
+		String responseBody = generator.runMultiple(typeToEntriesJson, "");
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-Powered-By", "AWS Lambda & Serverless");

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -150,6 +151,28 @@ public class Generator {
 		} catch (IOException err) {
 			return null;
 		}
+	}
+
+	public static String runMultiple(Map<String, String> typeToEntriesJson, String csv) {
+		ObjectNode resultNode = objectMapper.createObjectNode();
+
+		Set<String> types = typeToEntriesJson.keySet();
+
+		for (String type : types) {
+			String entriesJson = typeToEntriesJson.get(type);
+			JsonNode entriesJsonNode = parseEntriesJson(entriesJson);
+
+			if (entriesJsonNode != null) {
+				generateEntries(entriesJsonNode, resultNode, "country");
+			}
+		}
+
+		List<CSVRecord> csvList = parseCsv(csv);
+		if (csvList != null) {
+			generateNyms(csvList, resultNode);
+		}
+
+		return resultNode.toString();
 	}
 
 	public static String run(String countriesJson, String csv) {
