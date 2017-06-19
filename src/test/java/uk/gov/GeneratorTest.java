@@ -59,6 +59,23 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, inputCsv);
 
-		JSONAssert.assertEquals(expectedPickerJson, output, false);
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
+	}
+
+	@Test
+	public void withRealData() throws Exception {
+		String inputCountryJson = FileLoader.get("country-records.json");
+		String inputTerritoryJson = FileLoader.get("territory-records.json");
+		String inputUKJson = FileLoader.get("uk-records.json");
+		String inputCsv = FileLoader.get("location-picker-data.csv");
+
+		String expectedPickerJson = FileLoader.get("location-picker-graph.json");
+
+		String output = generator.runMultiple(
+			inputCountryJson, inputTerritoryJson, inputUKJson,
+			inputCsv
+		);
+
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
 }
