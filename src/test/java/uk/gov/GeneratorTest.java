@@ -17,7 +17,7 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, "");
 
-		JSONAssert.assertEquals(expectedPickerJson, output, false);
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
 
 	@Test
@@ -27,7 +27,7 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, "");
 
-		JSONAssert.assertEquals(expectedPickerJson, output, false);
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
 
 	@Test
@@ -37,7 +37,7 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, "");
 
-		JSONAssert.assertEquals(expectedPickerJson, output, false);
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class GeneratorTest {
 
 		String output = generator.run(inputCountryJson, inputCsv);
 
-		JSONAssert.assertEquals(expectedPickerJson, output, false);
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
 
 	@Test

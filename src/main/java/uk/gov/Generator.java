@@ -30,7 +30,8 @@ public class Generator {
 
 		ObjectNode meta = objectMapper.createObjectNode();
 		meta.put("canonical", isCanonical);
-		meta.put("canonical-mask", 1);
+		meta.put("canonical-mask", (isCanonical) ? 1 : 0);
+		meta.put("display-name", isStable);
 		meta.put("stable-name", isStable);
 
 		ObjectNode edgesNode = objectMapper.createObjectNode();
@@ -119,7 +120,7 @@ public class Generator {
 					+ combinedNyms + ", "
 					+ dwpNyms;
 
-				for (String nym : nyms.replace("\"", "").split(",\\s*")) {
+				for (String nym : nyms.replace("\"", "").split(",\\s*|\\r?\\n")) {
 					if (nym.length() > 0) {
 						ObjectNode nymNode = createEntryNode(
 							nym, "",
