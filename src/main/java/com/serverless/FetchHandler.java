@@ -31,30 +31,23 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 		String countryRegisterJson = "{}";
 		String territoryRegisterJson = "{}";
 		String ukRegisterJson = "{}";
-		String csv = "";
+		String synonymCsv = "";
 		try {
 			countryRegisterJson = fetcher.get("https://country.register.gov.uk/records.json?page-size=500");
+			LOG.info("Country Register string size: " + countryRegisterJson.length());
 			territoryRegisterJson = fetcher.get("https://territory.register.gov.uk/records.json?page-size=500");
+			LOG.info("Territory Register string size: " + territoryRegisterJson.length());
 			ukRegisterJson = fetcher.get("https://uk.discovery.openregister.org/records.json?page-size=500");
+			LOG.info("UK Register string size: " + ukRegisterJson.length());
+			synonymCsv = fetcher.get("https://raw.githubusercontent.com/openregister/generate-picker-data-file/csv/src/main/resources/location-picker-data.csv");
+			LOG.info("Synonym CSV string size: " + synonymCsv.length());
 		} catch (IOException err) {
 			LOG.error("HTTP request IOException: " + err);
 		}
 
-		try {
-			ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-			File file = new File(classLoader.getResource("location-picker-data.csv").getFile());
-			if (file != null) {
-				String csv2 = new String(Files.readAllBytes(file.toPath()));
-			}
-		} catch (IOException err) {
-			LOG.error("CSV read IOException: " + err);
-		} catch (Exception err) {
-			LOG.error("CSV read Exception: " + err);
-		}
-
 		String responseBody = generator.runMultiple(
 			countryRegisterJson, territoryRegisterJson, ukRegisterJson,
-			csv
+			synonymCsv
 		);
 
 		Map<String, String> headers = new HashMap<>();
