@@ -62,7 +62,7 @@ public class GeneratorTest {
 		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
 
-	@Test
+	// @Test
 	public void withRealData() throws Exception {
 		String inputCountryJson = FileLoader.get("country-records.json");
 		String inputTerritoryJson = FileLoader.get("territory-records.json");
