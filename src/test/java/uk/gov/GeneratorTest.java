@@ -69,7 +69,7 @@ public class GeneratorTest {
 		String inputUKJson = FileLoader.get("uk-records.json");
 		String inputCsv = FileLoader.get("location-picker-data.csv");
 
-		String expectedPickerJson = FileLoader.get("location-picker-graph.json");
+		String expectedPickerJson = fixtures.prettyJson(FileLoader.get("location-picker-graph.json"));
 
 		String output = generator.runMultiple(
 			inputCountryJson, inputTerritoryJson, inputUKJson,

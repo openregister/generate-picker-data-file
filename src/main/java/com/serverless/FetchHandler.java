@@ -39,7 +39,7 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 			LOG.info("Territory Register string size: " + territoryRegisterJson.length());
 			ukRegisterJson = fetcher.get("https://uk.discovery.openregister.org/records.json?page-size=500");
 			LOG.info("UK Register string size: " + ukRegisterJson.length());
-			synonymCsv = fetcher.get("https://raw.githubusercontent.com/openregister/generate-picker-data-file/csv/src/main/resources/location-picker-data.csv");
+			synonymCsv = fetcher.get("https://raw.githubusercontent.com/openregister/generate-picker-data-file/csv/src/main/resources/location-picker-data-temp.csv");
 			LOG.info("Synonym CSV string size: " + synonymCsv.length());
 		} catch (IOException err) {
 			LOG.error("HTTP request IOException: " + err);
