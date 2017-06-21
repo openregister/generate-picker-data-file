@@ -16,6 +16,7 @@ public class Fetcher {
 		String line;
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
+			result.append("\n");
 		}
 		rd.close();
 		return result.toString();
