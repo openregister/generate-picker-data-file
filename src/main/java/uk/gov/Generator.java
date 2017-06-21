@@ -12,6 +12,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import org.apache.log4j.Logger;
+
 public class Generator {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -135,25 +137,17 @@ public class Generator {
 		}
 	}
 
-	public static JsonNode parseEntriesJson(String entriesJson) {
-		try {
-			return objectMapper.readTree(entriesJson);
-		} catch(IOException err) {
-			return null;
-		}
+	public static JsonNode parseEntriesJson(String entriesJson) throws IOException {
+		return objectMapper.readTree(entriesJson);
 	}
 
-	public static List<CSVRecord> parseCsv(String csv) {
-		try {
-			CSVFormat format = CSVFormat.EXCEL.withHeader().withSkipHeaderRecord();
-			CSVParser parser = CSVParser.parse(csv, format);
-			return parser.getRecords();
-		} catch (IOException err) {
-			return null;
-		}
+	public static List<CSVRecord> parseCsv(String csv) throws IOException {
+		CSVFormat format = CSVFormat.EXCEL.withHeader().withSkipHeaderRecord();
+		CSVParser parser = CSVParser.parse(csv, format);
+		return parser.getRecords();
 	}
 
-	public static String runMultiple(String countriesJson, String territoriesJson, String ukJson, String csv) {
+	public static String runMultiple(String countriesJson, String territoriesJson, String ukJson, String csv) throws IOException {
 		ObjectNode resultNode = objectMapper.createObjectNode();
 
 		JsonNode countriesJsonNode = parseEntriesJson(countriesJson);
@@ -193,7 +187,7 @@ public class Generator {
 		return resultNode.toString();
 	}
 
-	public static String run(String countriesJson, String csv) {
+	public static String run(String countriesJson, String csv) throws IOException {
 		ObjectNode resultNode = objectMapper.createObjectNode();
 
 		JsonNode countriesJsonNode = parseEntriesJson(countriesJson);

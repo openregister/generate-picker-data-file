@@ -1,5 +1,6 @@
 package com.serverless;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,13 @@ public class GenerateHandler implements RequestHandler<Map<String, Object>, ApiG
 		LOG.info("received: " + input);
 
 		String postJson = input.get("body").toString();
-		String responseBody = generator.run(postJson, "");
+
+		String responseBody = "{}";
+		try {
+			responseBody = generator.run(postJson, "");
+		} catch (IOException err) {
+			LOG.error("generator.run IOException: " + err);
+		}
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-Powered-By", "AWS Lambda & Serverless");
