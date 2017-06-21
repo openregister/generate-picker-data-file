@@ -5,14 +5,20 @@ frameworkVersion: ">=1.2.0 <2.0.0"
 provider:
   name: aws
   runtime: java8
-  
+
 package:
   artifact: build/distributions/generate-picker-data-file.zip
 
 functions:
   generate:
-    handler: com.serverless.Handler
+    handler: com.serverless.GenerateHandler
     events:
       - http:
           path: generate
           method: post
+  fetch:
+    handler: com.serverless.FetchHandler
+    events:
+      - http:
+          path: fetch
+          method: get
