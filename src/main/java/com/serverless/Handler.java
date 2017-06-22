@@ -19,8 +19,12 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("received: " + input);
 		String postJson = input.get("body").toString();
-		Generator generator = new Generator();
-		String responseBody = generator.run(postJson, "");
+		String responseBody = "";
+		try {
+			responseBody = Generator.run(postJson, "");
+		} catch (Exception err) {
+			LOG.error("Generator.run error: " + err);
+		}
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-Powered-By", "AWS Lambda & Serverless");
 		headers.put("Content-Type", "application/json");
