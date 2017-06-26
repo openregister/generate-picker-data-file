@@ -15,3 +15,6 @@ target
 
 # Serverless directories
 .serverless
+
+# For hidden environment variables in local dev env
+.env
