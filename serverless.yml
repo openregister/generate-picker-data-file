@@ -1,4 +1,4 @@
-service: generate-picker-data-file
+service: picker-data
 
 frameworkVersion: ">=1.2.0 <2.0.0"
 
