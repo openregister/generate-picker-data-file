@@ -1,22 +1,14 @@
-# Simple HTTP Endpoint Example
+# Generate picker data file
 
-This example demonstrates how to setup a simple HTTP GET endpoint using Java. Once you ping it, it will reply with the current time.
+This is a Java module that transforms a [register(s)](https://registers.cloudapps.digital/) into a [graph data file](https://github.com/alphagov/openregister-picker-engine#how-it-works).
 
-[Jackson](https://github.com/FasterXML/jackson) is used to serialize objects to JSON.
-
-## Use Cases
-
-- Wrapping an existing internal or external endpoint/service
-
-## Build
-
-It is required to build prior to deploying. You can build the deployment artifact using Gradle.
+[Jackson](https://github.com/FasterXML/jackson) is used to serialize objects to and from JSON.
 
 ## Requirements
 
 - Java 8
 - Gradle 3.2+
-- Node 7 (optional, for [serverless](https://github.com/serverless/serverless))
+- Node 8 (optional, for [serverless](https://github.com/serverless/serverless) deployment)
 
 On macOS:
 
@@ -26,13 +18,12 @@ brew install gradle
 npm install -g serverless # optional, only if you want to deploy it to AWS Lambda
 ```
 
-### Gradle
+## Building and testing
 
-In order to build using Gradle simply run
+To build, run `gradle wrapper` to build the gradle wrapper jar, and from then on:
 
 ```bash
-gradle wrapper # to build the gradle wrapper jar
-./gradlew build # to build the application jar
+./gradlew build
 ```
 
 The expected result should be similar to:
@@ -57,12 +48,27 @@ BUILD SUCCESSFUL
 Total time: 8.195 secs
 ```
 
-## Deploy
-
-After having built the deployment artifact using Gradle as described above you can deploy by simply running
+To run the tests in watch mode:
 
 ```bash
-serverless deploy
+./gradlew --continuous test
+```
+
+## Deploying
+
+You can build and deploy in one command using:
+
+```bash
+./deploy.sh
+```
+
+You'll need some environment variables (you can store these in `./.env` and `source .env`):
+
+```bash
+export AWS_REGION=eu-west-2
+export AWS_ACCESS_KEY_ID=XXX
+export AWS_SECRET_ACCESS_KEY=YYY
+export STAGE=dev
 ```
 
 The expected result should be similar to:
@@ -79,57 +85,37 @@ Serverless: Checking Stack update progress...
 ..............................
 Serverless: Stack update finished...
 Service Information
-service: generate-picker-data-file
+service: picker-data
 stage: dev
-region: us-east-1
+region: eu-west-2
 api keys:
   None
 endpoints:
-  GET - https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/ping
+  GET - https://XXXXXXX.execute-api.eu-west-2.amazonaws.com/dev/fetch
 functions:
-  generate-picker-data-file-dev-currentTime: arn:aws:lambda:us-east-1:XXXXXXX:function:generate-picker-data-file-dev-currentTime
-
+  picker-data-dev-currentTime: arn:aws:lambda:eu-west-2:XXXXXXX:function:picker-data-dev-currentTime
 ```
+
+The AWS IAM user needs to have at least the permissions specified by the [picker-data-\_star\_-eu-west-2-policy.json](picker-data-_star_-eu-west-2-policy.json) in this repo. If something doesn't work and you get "Access Denied", try it with a user with `AdministratorAccess`.
 
 ## Usage
 
-You can now invoke the Lambda function directly and even see the resulting log via
+You can now invoke the Lambda function directly and see the resulting log via:
 
 ```bash
-serverless invoke --function currentTime --log
+serverless invoke --function fetch --log
 ```
 
-The expected result should be similar to:
+You can send an HTTP request directly to the endpoint using a tool like `curl`, Postman, or your browser:
 
 ```bash
-{
-    "statusCode": 200,
-    "body": "{\"message\":\"Hello, the current time is Wed Jan 04 23:44:37 UTC 2017\"}",
-    "headers": {
-        "X-Powered-By": "AWS Lambda & Serverless",
-        "Content-Type": "application/json"
-    },
-    "isBase64Encoded": false
-}
---------------------------------------------------------------------
-START RequestId: XXXXXXX Version: $LATEST
-2017-01-04 23:44:37 <XXXXXXX> INFO  com.serverless.Handler:18 - received: {}
-END RequestId: XXXXXXX
-REPORT RequestId: XXXXXXX	Duration: 0.51 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 53 MB
-```
-
-Finally you can send an HTTP request directly to the endpoint using a tool like curl
-
-```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/ping
-```
-
-The expected result should be similar to:
-
-```bash
-{"message": "Hello, the current time is Wed Jan 04 23:44:37 UTC 2017"}%  
+curl https://XXXXXXX.execute-api.eu-west-2.amazonaws.com/dev/fetch
 ```
 
 ## Scaling
 
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
+By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in ["To request a limit increase for concurrent executions"](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
+
+## License
+
+[MIT](LICENSE.txt).
