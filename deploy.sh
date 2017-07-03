@@ -16,5 +16,14 @@ fi
 
 echo "Deploying from branch $BRANCH to stage $STAGE"
 
-./gradlew build &&
+./gradlew build
+if [ $? -ne 0 ]; then
+  echo "Failed to build changes";
+  exit 1;
+fi
+
 sls deploy --stage $STAGE --region $AWS_REGION
+if [ $? -ne 0 ]; then
+  echo "Failed to deploy changes";
+  exit 1;
+fi
