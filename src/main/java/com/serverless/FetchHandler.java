@@ -27,41 +27,36 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("received: " + input);
 
-		// String countryRegisterJson = "{}";
-		// String territoryRegisterJson = "{}";
-		// String ukRegisterJson = "{}";
-		// String synonymCsv = "";
-		// try {
-		// 	countryRegisterJson = Fetcher.get("https://country.register.gov.uk/records.json?page-size=500");
-		// 	LOG.info("Country Register string size: " + countryRegisterJson.length());
-		// 	territoryRegisterJson = Fetcher.get("https://territory.register.gov.uk/records.json?page-size=500");
-		// 	LOG.info("Territory Register string size: " + territoryRegisterJson.length());
-		// 	ukRegisterJson = Fetcher.get("https://uk.discovery.openregister.org/records.json?page-size=500");
-		// 	LOG.info("UK Register string size: " + ukRegisterJson.length());
-		// 	synonymCsv = Fetcher.get("https://raw.githubusercontent.com/openregister/generate-picker-data-file/master/src/main/resources/location-picker-data.csv");
-		// 	LOG.info("Synonym CSV string size: " + synonymCsv.length());
-		// } catch (IOException err) {
-		// 	LOG.error("HTTP request IOException: " + err);
-		// }
-		//
-		// String responseBody = "{}";
-		// try {
-		// 	responseBody = Generator.runMultiple(
-		// 		countryRegisterJson, territoryRegisterJson, ukRegisterJson,
-		// 		synonymCsv
-		// 	);
-		// } catch (IOException err) {
-		// 	LOG.error("Generator.runMultiple IOException: " + err);
-		// }
+		String countryRegisterJson = "{}";
+		String territoryRegisterJson = "{}";
+		String ukRegisterJson = "{}";
+		String synonymCsv = "";
+		try {
+			countryRegisterJson = Fetcher.get("https://country.register.gov.uk/records.json?page-size=500");
+			LOG.info("Country Register string size: " + countryRegisterJson.length());
+			territoryRegisterJson = Fetcher.get("https://territory.register.gov.uk/records.json?page-size=500");
+			LOG.info("Territory Register string size: " + territoryRegisterJson.length());
+			ukRegisterJson = Fetcher.get("https://uk.discovery.openregister.org/records.json?page-size=500");
+			LOG.info("UK Register string size: " + ukRegisterJson.length());
+			synonymCsv = Fetcher.get("https://raw.githubusercontent.com/openregister/generate-picker-data-file/master/src/main/resources/location-picker-data.csv");
+			LOG.info("Synonym CSV string size: " + synonymCsv.length());
+		} catch (IOException err) {
+			LOG.error("HTTP request IOException: " + err);
+		}
 
-		String key = "MyObjectKey";
+		String key = "location-picker-data.json";
 
 		AmazonS3 s3 = new AmazonS3Client();
 		Region usEast1 = Region.getRegion(Regions.US_EAST_1);
 		s3.setRegion(usEast1);
 
 		try {
-			s3.putObject(new PutObjectRequest("write-to-s3-test", key, createSampleFile()));
+			String dataFileContent = Generator.runMultiple(
+				countryRegisterJson, territoryRegisterJson, ukRegisterJson,
+				synonymCsv
+			);
+
+			s3.putObject(new PutObjectRequest("write-to-s3-test", key, createSampleFile(dataFileContent)));
 		} catch (IOException err) {
 			LOG.error("Generator.runMultiple IOException: " + err);
 		}
@@ -77,16 +72,12 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 				.build();
 	}
 
-	private static File createSampleFile() throws IOException {
+	private static File createSampleFile(String content) throws IOException {
 		File file = File.createTempFile("aws-java-sdk-", ".txt");
 		file.deleteOnExit();
 
 		Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-		writer.write("abcdefghijklmnopqrstuvwxyz\n");
-		writer.write("01234567890112345678901234\n");
-		writer.write("!@#$%^&*()-=[]{};':',.<>/?\n");
-		writer.write("01234567890112345678901234\n");
-		writer.write("abcdefghijklmnopqrstuvwxyz\n");
+		writer.write(content);
 		writer.close();
 
 		return file;
