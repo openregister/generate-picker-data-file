@@ -67,6 +67,26 @@ public class Generator {
 		}
 	}
 
+	public static void generateEntries(JsonNode entriesJsonNode, ObjectNode resultNode, String type, boolean onlyCurrentEntries) {
+		Iterator<JsonNode> entries = entriesJsonNode.elements();
+
+		while (entries.hasNext()) {
+			JsonNode entry = entries.next();
+			JsonNode item = entry.get("item").get(0);
+			String key = entry.get("key").textValue();
+
+			ObjectNode entryNode = createEntryNode(
+				item.get("name").textValue(), "",
+				true, true,
+				new String[]{}
+			);
+
+			if (item.get("end-date") == null) {
+				resultNode.set(type + ":" + key, entryNode);
+			}
+		}
+	}
+
 	public static void generateNyms(List<CSVRecord> csvList, ObjectNode resultNode) {
 		for (CSVRecord record : csvList) {
 			String key = record.get("Andy's key");
@@ -185,6 +205,54 @@ public class Generator {
 		}
 
 		return resultNode.toString();
+	}
+
+	public static String[] runLocationPickerWithSubsets(String countriesJson, String territoriesJson, String ukJson, String csv) throws IOException {
+		ObjectNode resultNode = objectMapper.createObjectNode();
+		ObjectNode currentResultNode = objectMapper.createObjectNode();
+
+		JsonNode countriesJsonNode = parseEntriesJson(countriesJson);
+		if (countriesJsonNode != null) {
+			generateEntries(countriesJsonNode, resultNode, "country");
+			generateEntries(countriesJsonNode, currentResultNode, "country", false);
+		}
+
+		JsonNode territoriesJsonNode = parseEntriesJson(territoriesJson);
+		if (territoriesJsonNode != null) {
+			generateEntries(territoriesJsonNode, resultNode, "territory");
+			generateEntries(territoriesJsonNode, currentResultNode, "territory");
+		}
+
+		JsonNode ukJsonNode = parseEntriesJson(ukJson);
+		if (ukJsonNode != null) {
+			Iterator<JsonNode> entries = ukJsonNode.elements();
+
+			while (entries.hasNext()) {
+				JsonNode entry = entries.next();
+				JsonNode item = entry.get("item").get(0);
+				String key = entry.get("key").textValue();
+
+				ObjectNode entryNode;
+				entryNode = createEntryNode(
+					item.get("name").textValue(), "",
+					false, true,
+					new String[]{"country:GB"}
+				);
+
+				resultNode.set("uk:" + key, entryNode);
+				currentResultNode.set("uk:" + key, entryNode);
+			}
+		}
+
+		List<CSVRecord> csvList = parseCsv(csv);
+		if (csvList != null) {
+			generateNyms(csvList, resultNode);
+			generateNyms(csvList, currentResultNode);
+		}
+
+		String completeList = resultNode.toString();
+		String currentList = currentResultNode.toString();
+		return new String[]{completeList, currentList};
 	}
 
 	public static String run(String countriesJson, String csv) throws IOException {

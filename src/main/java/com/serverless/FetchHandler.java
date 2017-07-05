@@ -44,19 +44,18 @@ public class FetchHandler implements RequestHandler<Map<String, Object>, ApiGate
 			LOG.error("HTTP request IOException: " + err);
 		}
 
-		String key = "location-picker-data.json";
-
 		AmazonS3 s3 = new AmazonS3Client();
 		Region usEast1 = Region.getRegion(Regions.US_EAST_1);
 		s3.setRegion(usEast1);
 
 		try {
-			String dataFileContent = Generator.runMultiple(
+			String[] completeDataFileContent = Generator.runLocationPickerWithSubsets(
 				countryRegisterJson, territoryRegisterJson, ukRegisterJson,
 				synonymCsv
 			);
 
-			s3.putObject(new PutObjectRequest("write-to-s3-test", key, createSampleFile(dataFileContent)));
+			s3.putObject(new PutObjectRequest("write-to-s3-test", "complete-location-picker-data.json", createSampleFile(completeDataFileContent[0])));
+			s3.putObject(new PutObjectRequest("write-to-s3-test", "current-location-picker-data.json", createSampleFile(completeDataFileContent[1])));
 		} catch (IOException err) {
 			LOG.error("Generator.runMultiple IOException: " + err);
 		}
