@@ -2,9 +2,17 @@ service: picker-data
 
 frameworkVersion: ">=1.2.0 <2.0.0"
 
+custom:
+  bucket: write-to-s3-test
+
 provider:
   name: aws
   runtime: java8
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+      Resource: "arn:aws:s3:::${self:custom.bucket}/*"
 
 package:
   artifact: build/distributions/generate-picker-data-file.zip
@@ -22,3 +30,5 @@ functions:
       - http:
           path: fetch
           method: get
+    environment:
+      BUCKET: ${self:custom.bucket}
