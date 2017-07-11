@@ -94,17 +94,17 @@ public class Generator {
 					resultNode.set("nym:" + code, codeNode);
 				}
 
-				String welshName = record.get("Welsh");
-				if (welshName != null) {
-					String englishName = resultNode.get(key).get("names").get("en-GB").textValue();
-					ObjectNode replacedCountryNode = createEntryNode(
-						englishName, welshName,
-						true, true,
-						new String[]{}
-					);
-
-					resultNode.set(key, replacedCountryNode);
-				}
+				// String welshName = record.get("Welsh");
+				// if (welshName != null) {
+				// 	String englishName = resultNode.get(key).get("names").get("en-GB").textValue();
+				// 	ObjectNode replacedCountryNode = createEntryNode(
+				// 		englishName, welshName,
+				// 		true, true,
+				// 		new String[]{}
+				// 	);
+				//
+				// 	resultNode.set(key, replacedCountryNode);
+				// }
 
 				// Any and all of these field names can be out of bounds.
 				String passportNyms = "";

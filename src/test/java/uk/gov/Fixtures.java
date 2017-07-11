@@ -370,17 +370,17 @@ public class Fixtures {
 	}
 
 	public static String graphWithSynonymsOnlyGb() throws Exception {
-		String[] graphEntries = {graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK};
+		String[] graphEntries = {graphJsonGb, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK};
 		return prettyJson(joinJsonEntries(graphEntries));
 	}
 
 	public static String graphWithSynonymsOnlyGbDe() throws Exception {
-		String[] graphEntries = {graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK, graphJsonDeWithCy, graphJsonNymFRG, graphJsonNymDeutschland, graphJsonNymDE, graphJsonNymBundesrepublik};
+		String[] graphEntries = {graphJsonGb, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK, graphJsonDe, graphJsonNymFRG, graphJsonNymDeutschland, graphJsonNymDE, graphJsonNymBundesrepublik};
 		return prettyJson(joinJsonEntries(graphEntries));
 	}
 
 	public static String graphThreeRegistersWithCsv() throws Exception {
-		String[] graphEntries = {graphJsonGbWithCy, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK, graphJsonDeWithCy, graphJsonNymFRG, graphJsonNymDeutschland, graphJsonNymDE, graphJsonNymBundesrepublik, graphJsonPr, graphJsonWls};
+		String[] graphEntries = {graphJsonGb, graphJsonNymUKGBNI, graphJsonNymBrtain, graphJsonNymGB, graphJsonNymUK, graphJsonDe, graphJsonNymFRG, graphJsonNymDeutschland, graphJsonNymDE, graphJsonNymBundesrepublik, graphJsonPr, graphJsonWls};
 		return prettyJson(joinJsonEntries(graphEntries));
 	}
 }
