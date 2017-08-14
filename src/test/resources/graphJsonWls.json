@@ -1,0 +1,15 @@
+"uk:WLS": {
+  "names": {
+    "en-GB": "Wales",
+    "cy": false
+  },
+  "meta": {
+    "canonical": false,
+    "canonical-mask": 0,
+    "display-name": true,
+    "stable-name": true
+  },
+  "edges": {
+    "from": ["country:GB"]
+  }
+}

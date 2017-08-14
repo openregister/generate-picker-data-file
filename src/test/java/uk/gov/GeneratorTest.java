@@ -1,12 +1,10 @@
 package uk.gov;
 
-import java.io.IOException;
-import static org.junit.Assert.*;
-import org.json.JSONException;
 import org.junit.*;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class GeneratorTest {
+
 	@Test
 	public void noCountry() throws Exception {
 		String inputCountryJson = "{}";

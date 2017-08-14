@@ -1,0 +1,15 @@
+"nym:The United Kingdom of Great Britain and Northern Ireland": {
+  "names": {
+    "en-GB": "The United Kingdom of Great Britain and Northern Ireland",
+    "cy": false
+  },
+  "meta": {
+    "canonical": false,
+    "canonical-mask": 0,
+    "display-name": true,
+    "stable-name": true
+  },
+  "edges": {
+    "from": ["country:GB"]
+  }
+}

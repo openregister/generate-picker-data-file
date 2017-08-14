@@ -1,0 +1,15 @@
+"country:DE": {
+  "names": {
+    "en-GB": "Germany",
+    "cy": false
+  },
+  "meta": {
+    "canonical": true,
+    "canonical-mask": 1,
+    "display-name": true,
+    "stable-name": true
+  },
+  "edges": {
+    "from": []
+  }
+}

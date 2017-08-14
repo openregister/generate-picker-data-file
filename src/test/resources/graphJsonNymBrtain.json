@@ -1,0 +1,15 @@
+"nym:Brtain": {
+  "names": {
+    "en-GB": "Brtain",
+    "cy": false
+  },
+  "meta": {
+    "canonical": false,
+    "canonical-mask": 0,
+    "display-name": false,
+    "stable-name": false
+  },
+  "edges": {
+    "from": ["country:GB"]
+  }
+}

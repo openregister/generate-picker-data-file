@@ -1,0 +1,15 @@
+"country:GB": {
+  "names": {
+    "en-GB": "United Kingdom",
+    "cy": false
+  },
+  "meta": {
+    "canonical": true,
+    "canonical-mask": 1,
+    "display-name": true,
+    "stable-name": true
+  },
+    "edges": {
+    "from": []
+  }
+}

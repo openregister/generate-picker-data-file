@@ -1,0 +1,15 @@
+"territory:PR": {
+  "names": {
+    "en-GB": "Puerto Rico",
+    "cy": false
+  },
+  "meta": {
+    "canonical": true,
+    "canonical-mask": 1,
+    "display-name": true,
+    "stable-name": true
+  },
+  "edges": {
+    "from": []
+  }
+}
