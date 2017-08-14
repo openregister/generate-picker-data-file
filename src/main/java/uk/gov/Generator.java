@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,10 +18,8 @@ import org.apache.commons.csv.CSVRecord;
 public class Generator {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	public static ObjectNode createEntryNode(
-		String gbName, String cyName,
-		boolean isCanonical, boolean isStable,
-		String[] from
+	public static ObjectNode createEntryNode(String gbName, String cyName,
+		boolean isCanonical, boolean isStable, String[] from, String startDate, String endDate
 	) {
 		ObjectNode names = objectMapper.createObjectNode();
 		names.put("en-GB", gbName);
@@ -41,8 +40,13 @@ public class Generator {
 		for (String fromStr : from) { fromNode.add(fromStr); }
 		edgesNode.set("from", fromNode);
 
+		ObjectNode dates = objectMapper.createObjectNode();
+		if (startDate != null) dates.put("start-date", startDate);
+		if (endDate != null) dates.put("end-date", startDate);
+
 		ObjectNode entryNode = objectMapper.createObjectNode();
 		entryNode.set("names", names);
+		if (startDate != null || endDate != null) entryNode.set("dates", dates);
 		entryNode.set("meta", meta);
 		entryNode.set("edges", edgesNode);
 
@@ -56,11 +60,13 @@ public class Generator {
 			JsonNode entry = entries.next();
 			JsonNode item = entry.get("item").get(0);
 			String key = entry.get("key").textValue();
+			String startDate = item.get("start-date") != null ? item.get("start-date").asText() : null;
+			String endDate = item.get("end-date") != null ? item.get("end-date").asText() : null;
 
 			ObjectNode entryNode = createEntryNode(
 				item.get("name").textValue(), "",
 				true, true,
-				new String[]{}
+				new String[]{}, startDate, endDate
 			);
 
 			resultNode.set(type + ":" + key, entryNode);
@@ -77,7 +83,7 @@ public class Generator {
 					ObjectNode officialNameNode = createEntryNode(
 						officialName, "",
 						false, true,
-						new String[]{key}
+						new String[]{key}, null, null
 					);
 
 					resultNode.set("nym:" + officialName, officialNameNode);
@@ -88,7 +94,7 @@ public class Generator {
 					ObjectNode codeNode = createEntryNode(
 						code, "",
 						false, false,
-						new String[]{key}
+						new String[]{key}, null, null
 					);
 
 					resultNode.set("nym:" + code, codeNode);
@@ -127,7 +133,7 @@ public class Generator {
 						ObjectNode nymNode = createEntryNode(
 							nym, "",
 							false, false,
-							new String[]{key}
+							new String[]{key}, null, null
 						);
 
 						resultNode.set("nym:" + nym, nymNode);
@@ -172,7 +178,7 @@ public class Generator {
 				ObjectNode entryNode = createEntryNode(
 					item.get("name").textValue(), "",
 					false, true,
-					new String[]{"country:GB"}
+					new String[]{"country:GB"}, null, null
 				);
 
 				resultNode.set("uk:" + key, entryNode);
