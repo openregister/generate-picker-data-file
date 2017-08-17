@@ -187,12 +187,12 @@ public class Generator {
 		return resultNode.toString();
 	}
 
-	public static String run(String countriesJson, String csv) throws IOException {
+	public static String run(String inputJson, String csv, String name) throws IOException {
 		ObjectNode resultNode = objectMapper.createObjectNode();
 
-		JsonNode countriesJsonNode = parseEntriesJson(countriesJson);
+		JsonNode countriesJsonNode = parseEntriesJson(inputJson);
 		if (countriesJsonNode != null) {
-			generateEntries(countriesJsonNode, resultNode, "country");
+			generateEntries(countriesJsonNode, resultNode, name);
 		}
 
 		List<CSVRecord> csvList = parseCsv(csv);

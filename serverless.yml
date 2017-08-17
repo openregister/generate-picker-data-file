@@ -14,8 +14,12 @@ functions:
     handler: com.serverless.GenerateHandler
     events:
       - http:
-          path: generate
+          path: generate/{id}
           method: post
+          request:
+          parameters:
+            paths:
+              id: true
   fetch:
     handler: com.serverless.FetchHandler
     events:

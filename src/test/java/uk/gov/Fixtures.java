@@ -94,6 +94,24 @@ public class Fixtures {
 			+ "}"
 		+ "}";
 
+
+	public static final String graphJsonOtherName = ""
+		+ "\"otherName:GB\": {"
+			+ "\"names\": {"
+				+ "\"en-GB\": \"United Kingdom\","
+				+ "\"cy\": false"
+			+ "},"
+			+ "\"meta\": {"
+				+ "\"canonical\": true,"
+				+ "\"canonical-mask\": 1,"
+				+ "\"display-name\": true,"
+				+ "\"stable-name\": true"
+			+ "},"
+			+ "\"edges\": {"
+				+ "\"from\": []"
+			+ "}"
+		+ "}";
+
 	public static final String graphJsonGbWithCy = ""
 		+ "\"country:GB\": {"
 			+ "\"names\": {"
@@ -361,6 +379,11 @@ public class Fixtures {
 
 	public static String graphOnlyGb() throws Exception {
 		String[] graphEntries = {graphJsonGb};
+		return prettyJson(joinJsonEntries(graphEntries));
+	}
+
+	public static String getGraphJsonOtherName() throws Exception {
+		String[] graphEntries = {graphJsonOtherName};
 		return prettyJson(joinJsonEntries(graphEntries));
 	}
 
