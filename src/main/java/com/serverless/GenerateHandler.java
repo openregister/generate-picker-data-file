@@ -18,13 +18,15 @@ public class GenerateHandler implements RequestHandler<Map<String, Object>, ApiG
 
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+
 		LOG.info("received: " + input);
 
+		String name = ((Map<String, String>) input.get("pathParameters")).getOrDefault("id", "country");
 		String postJson = input.get("body").toString();
 
 		String responseBody = "{}";
 		try {
-			responseBody = Generator.run(postJson, "");
+			responseBody = Generator.run(postJson, "", name);
 		} catch (IOException err) {
 			LOG.error("Generator.run IOException: " + err);
 		}

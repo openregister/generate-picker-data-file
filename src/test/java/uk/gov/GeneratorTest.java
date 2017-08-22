@@ -12,7 +12,7 @@ public class GeneratorTest {
 		String inputCountryJson = "{}";
 		String expectedPickerJson = "{}";
 
-		String output = Generator.run(inputCountryJson, "");
+		String output = Generator.run(inputCountryJson, "", "country");
 
 		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
@@ -22,7 +22,17 @@ public class GeneratorTest {
 		String inputCountryJson = Fixtures.countryRegisterOnlyGb();
 		String expectedPickerJson = Fixtures.graphOnlyGb();
 
-		String output = Generator.run(inputCountryJson, "");
+		String output = Generator.run(inputCountryJson, "", "country");
+
+		JSONAssert.assertEquals(expectedPickerJson, output, true);
+	}
+
+	@Test
+	public void oneOtherName() throws Exception {
+		String inputCountryJson = Fixtures.countryRegisterOnlyGb();
+		String expectedPickerJson = Fixtures.getGraphJsonOtherName();
+
+		String output = Generator.run(inputCountryJson, "", "otherName");
 
 		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
@@ -32,7 +42,7 @@ public class GeneratorTest {
 		String inputCountryJson = Fixtures.countryRegisterOnlyGbDe();
 		String expectedPickerJson = Fixtures.graphOnlyGbDe();
 
-		String output = Generator.run(inputCountryJson, "");
+		String output = Generator.run(inputCountryJson, "", "country");
 
 		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
@@ -43,7 +53,7 @@ public class GeneratorTest {
 		String inputCsv = Fixtures.csvOnlyGb();
 		String expectedPickerJson = Fixtures.graphWithSynonymsOnlyGb();
 
-		String output = Generator.run(inputCountryJson, inputCsv);
+		String output = Generator.run(inputCountryJson, inputCsv, "country");
 
 		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
@@ -54,7 +64,7 @@ public class GeneratorTest {
 		String inputCsv = Fixtures.csvOnlyGbDe();
 		String expectedPickerJson = Fixtures.graphWithSynonymsOnlyGbDe();
 
-		String output = Generator.run(inputCountryJson, inputCsv);
+		String output = Generator.run(inputCountryJson, inputCsv, "country");
 
 		JSONAssert.assertEquals(expectedPickerJson, output, true);
 	}
